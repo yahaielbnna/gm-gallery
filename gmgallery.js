@@ -5,7 +5,8 @@ class gmgallery {
     }
     create(attribute = null) {
         let imgsContainer;
-        if (typeof this.parent == Object) {
+
+        if (typeof this.parent == "object") {
             imgsContainer = this.parent;
         } else {
             imgsContainer = document.querySelector(this.parent);
@@ -43,14 +44,8 @@ class gmgallery {
 
         imgElement.src = imgs[index].src;
 
-        leftArrow.addEventListener('click', _ => {
-            index == 0 ? index = imgs.length - 1 : index--;
-            imgElement.src = imgs[index].src;
-        });
-        rightArrow.addEventListener('click', _ => {
-            index == imgs.length - 1 ? index = 0 : index++;
-            imgElement.src = imgs[index].src;
-        });
+        leftArrow.addEventListener('click', leftMove);
+        rightArrow.addEventListener('click', rightMove);
 
 
         this.popup.addEventListener('click', e => {
@@ -62,8 +57,15 @@ class gmgallery {
             this.close();
         })
         window.onkeyup = e => {
+            
             if (e.which == 27) {
                 this.close();
+            }
+            if (e.which == 39) {
+                rightMove()
+            }
+            if (e.which == 37) {
+                leftMove()
             }
         }
 
@@ -72,6 +74,15 @@ class gmgallery {
         this.popup.appendChild(rightArrow)
         this.popup.appendChild(close)
         document.body.appendChild(this.popup);
+
+        function leftMove() {
+            index == 0 ? index = imgs.length - 1 : index--;
+            imgElement.src = imgs[index].src;
+        }
+        function rightMove() {
+            index == imgs.length - 1 ? index = 0 : index++;
+            imgElement.src = imgs[index].src;
+        }
     }
     close() {
         this.popup.remove()
